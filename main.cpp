@@ -5,6 +5,15 @@ constexpr int SCREEN_HEIGHT = 480;
 constexpr int FPS = 25;
 constexpr int MS_PER_FRAME = 1000 / FPS;
 
+bool right_pressed = false;
+bool left_pressed = false;
+bool up_pressed = false;
+bool down_pressed = false;
+
+// declaration of functions
+//
+void logic(SDL_Surface* screen_surface);
+
 namespace {
 
   SDL_Window* window = NULL;
@@ -41,6 +50,8 @@ int main (int argc, char ** args) {
   uint64_t next_frame_ms = SDL_GetTicks() + MS_PER_FRAME;
 
   while(1) {
+
+    logic(screen_surface);
     SDL_LockSurface(screen_surface);
     SDL_UnlockSurface(screen_surface);
     SDL_UpdateWindowSurface(window);
@@ -48,3 +59,60 @@ int main (int argc, char ** args) {
     next_frame_ms += MS_PER_FRAME;
   }
 };
+
+void logic(SDL_Surface* screen_surface){
+
+  SDL_Event event;
+
+   while( SDL_PollEvent( &event ) ){
+    switch( event.type ){
+      case SDL_KEYDOWN:
+	  switch (event.key.keysym.scancode) {
+
+      // system keys
+
+	    case SDL_SCANCODE_ESCAPE:
+	      finish();
+	      break;
+
+      // moving keys
+
+      case SDL_SCANCODE_W:
+        up_pressed = true;
+        break;
+      case SDL_SCANCODE_A:
+        left_pressed = true;
+        break;
+      case SDL_SCANCODE_D:
+        right_pressed = true;
+        break;
+      case SDL_SCANCODE_S:
+        down_pressed = true;
+        break;
+      default:
+        break;
+    }
+
+    break;
+
+      case SDL_KEYUP:
+        switch (event.key.keysym.scancode) {
+          case SDL_SCANCODE_A:
+            left_pressed = false;
+            break;
+          case SDL_SCANCODE_D:
+            right_pressed = false;
+            break;
+          case SDL_SCANCODE_W:
+            up_pressed = false;
+            break;
+          case SDL_SCANCODE_S:
+            down_pressed = false;
+            break;
+          default:
+            break;
+        } 
+      break;
+    }
+  }
+}
