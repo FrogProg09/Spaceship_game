@@ -1,9 +1,16 @@
 #include <SDL2/SDL.h>
+#include "headers/hitbox.h"
 
-constexpr int SCREEN_WIDTH = 640;
-constexpr int SCREEN_HEIGHT = 480;
+// hitboxes 
+const hitbox screen_hitbox(640, 480);
+const hitbox ship_hitbox(60, 60);
+
+// constants
+
 constexpr int FPS = 25;
 constexpr int MS_PER_FRAME = 1000 / FPS;
+
+// declaration of keys' presses
 
 bool right_pressed = false;
 bool left_pressed = false;
@@ -11,7 +18,7 @@ bool up_pressed = false;
 bool down_pressed = false;
 
 // declaration of functions
-//
+
 void logic(SDL_Surface* screen_surface);
 
 namespace {
@@ -39,7 +46,7 @@ int main (int argc, char ** args) {
   SDL_Surface* screen_surface = NULL;
   
   window = SDL_CreateWindow("Spaceship",SDL_WINDOWPOS_UNDEFINED, 
-			    SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 
+			    SDL_WINDOWPOS_UNDEFINED, screen_hitbox.width, screen_hitbox.height, 
 			    SDL_WINDOW_SHOWN);
     
   if (window == NULL) {
